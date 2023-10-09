@@ -1,5 +1,5 @@
 {
-  "name": "e-shop-tutorial",
+  "name": "e-shop",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -10,10 +10,9 @@
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "shahriar Sajeeb",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.37.3",
     "cookie-parser": "^1.4.6",
@@ -26,5 +25,9 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "stripe": "^12.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
   }
 }

@@ -6,14 +6,26 @@ const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
 const Order = require("../model/order");
 const Shop = require("../model/shop");
 const Product = require("../model/product");
+const sendMail = require("../utils/sendMail"); 
 
 // create new order
+const sendmail=async(mailId,subject,message)=>{
+  try {
+    await sendMail({
+      email: mailId,
+      subject: subject,
+      message: message,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}
 router.post(
   "/create-order",
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
-
+      console.log('user detail from create order',user)
       //   group cart items by shopId
       const shopItemsMap = new Map();
 
@@ -37,6 +49,15 @@ router.post(
           paymentInfo,
         });
         orders.push(order);
+      }
+      try {
+        await sendMail({
+          email: user.email,
+          subject: "Order Successfull",
+          message: `Hello ${user.name}, Your order is successfully placed and you can track your order from the Procart website. `,
+        });
+      } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
       }
 
       res.status(201).json({
@@ -96,6 +117,7 @@ router.put(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const order = await Order.findById(req.params.id);
+      console.log("order from user",order.user);
 
       if (!order) {
         return next(new ErrorHandler("Order not found with this id", 400));
@@ -104,6 +126,7 @@ router.put(
         order.cart.forEach(async (o) => {
           await updateOrder(o._id, o.qty);
         });
+        sendmail(order.user.email,"Update on your order",`Hi ${order.user.name}, You order got Transfered to delievry partner and your order will reach you by 5 to 7 days.`)
       }
 
       order.status = req.body.status;
@@ -113,6 +136,8 @@ router.put(
         order.paymentInfo.status = "Succeeded";
         const serviceCharge = order.totalPrice * .10;
         await updateSellerInfo(order.totalPrice - serviceCharge);
+        sendmail(order.user.email,"Order Delieverd Successfully",`Hi ${order.user.name}, You order got Delivered Successfully, Thanks for the Ordering from Procart.`)
+        
       }
 
       await order.save({ validateBeforeSave: false });
@@ -159,6 +184,7 @@ router.put(
 
       await order.save({ validateBeforeSave: false });
 
+      sendmail(order.user.email,"Order refund Request",`Hi ${order.user.name}, your Refund Request for the order got reeceived and our vendor will check the issue and update the refund process.`)
       res.status(200).json({
         success: true,
         order,
@@ -191,10 +217,12 @@ router.put(
         message: "Order Refund successfull!",
       });
 
+
       if (req.body.status === "Refund Success") {
         order.cart.forEach(async (o) => {
           await updateOrder(o._id, o.qty);
         });
+        sendmail(order.user.email,"Refund Successfully",`Hi ${order.user.name}, Your refund for the order ${order.id} is successfully refunded to your account and you will get your refund with in 7 days.`)
       }
 
       async function updateOrder(id, qty) {
