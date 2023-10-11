@@ -48,10 +48,12 @@ router.post("/create-user", async (req, res, next) => {
         message: `please check your email:- ${user.email} to activate your account!`,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:false})
+      //res.status(500).json({message:error.message,success:'false'})
     }
   } catch (error) {
-    return next(new ErrorHandler(error.message, 400));
+    res.status(400).json({message:error.message,success:false})
+    //return next(new ErrorHandler(error.message, 400));
   }
 });
 
@@ -75,6 +77,7 @@ router.post(
       );
 
       if (!newUser) {
+        res.status(400).json({message:'Invalid token',success:false})
         return next(new ErrorHandler("Invalid token", 400));
       }
       const { name, email, password, avatar } = newUser;
@@ -82,6 +85,7 @@ router.post(
       let user = await User.findOne({ email });
 
       if (user) {
+        res.status(400).json({message:"User already exists",success:false})
         return next(new ErrorHandler("User already exists", 400));
       }
       user = await User.create({
@@ -93,7 +97,8 @@ router.post(
 
       sendToken(user, 201, res);
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:false})
+      //res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -115,20 +120,23 @@ router.post(
       const user = await User.findOne({ email }).select("+password");
 
       if (!user) {
-        return next(new ErrorHandler("User doesn't exists!", 400));
+        res.status(400).json({message:"User doesn't exists",success:'false'})
+        //return next(new ErrorHandler("User doesn't exists!", 400));
       }
 
       const isPasswordValid = await user.comparePassword(password);
 
       if (!isPasswordValid) {
         return next(
-          new ErrorHandler("Please provide the correct information", 400)
+          res.status(400).json({message:"Please provide the correct information",success:'false'})
+          //new ErrorHandler("Please provide the correct information", 400)
         );
       }
 
       sendToken(user, 201, res);
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
+      //res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -150,7 +158,7 @@ router.get(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -171,7 +179,7 @@ router.get(
         message: "Log out successful!",
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -209,7 +217,7 @@ router.put(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -244,7 +252,7 @@ router.put(
         user: existsUser,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -284,7 +292,7 @@ router.put(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -309,7 +317,7 @@ router.delete(
 
       res.status(200).json({ success: true, user });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -344,7 +352,7 @@ router.put(
         message: "Password updated successfully!",
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -361,7 +369,7 @@ router.get(
         user,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -381,7 +389,7 @@ router.get(
         users,
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );
@@ -412,7 +420,7 @@ router.delete(
         message: "User deleted successfully!",
       });
     } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
+      res.status(500).json({message:error.message,success:'false'})
     }
   })
 );

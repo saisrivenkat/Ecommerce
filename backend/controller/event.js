@@ -92,7 +92,7 @@ router.delete(
     try {
       const event = await Event.findById(req.params.id);
 
-      if (!product) {
+      if (!event) {
         return next(new ErrorHandler("Product is not found with this id", 404));
       }    
 

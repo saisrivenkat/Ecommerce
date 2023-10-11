@@ -32,7 +32,7 @@ router.post(
         });
       }
     } catch (error) {
-      return next(new ErrorHandler(error.response.message), 500);
+      res.status(500).json({message:error.response.message,success:'false'})
     }
   })
 );
