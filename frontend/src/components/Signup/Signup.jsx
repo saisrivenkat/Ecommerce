@@ -85,6 +85,7 @@ const Singup = () => {
                   type="email"
                   name="email"
                   autoComplete="email"
+                  aria-label='email'
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

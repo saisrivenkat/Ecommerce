@@ -57,9 +57,11 @@ const Header = ({ activeHeading }) => {
         <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
           <div>
             <Link to="/">
-              <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
+            <img
+                src="https://www.procart.us/uploads/1/3/0/8/130819476/pc-photoshop-800-logo-b_orig.png"
                 alt=""
+                width={152}
+                height={36}
               />
             </Link>
           </div>
