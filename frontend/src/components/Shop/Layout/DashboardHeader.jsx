@@ -12,10 +12,12 @@ const DashboardHeader = () => {
     <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
       <div>
         <Link to="/dashboard">
-          <img
-            src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-            alt=""
-          />
+        <img
+                src="https://www.procart.us/uploads/1/3/0/8/130819476/pc-photoshop-800-logo-b_orig.png"
+                alt=""
+                width={152}
+                height={36}
+              />
         </Link>
       </div>
       <div className="flex items-center">
