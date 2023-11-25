@@ -35,7 +35,7 @@ router.post("/create-user", async (req, res, next) => {
 
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `http://localhost:3001/activation/${activationToken}`;
+    const activationUrl = `https://melodic-pothos-017481.netlify.app/activation/${activationToken}`;
 
     try {
       await sendMail({
