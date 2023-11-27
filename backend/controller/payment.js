@@ -12,7 +12,8 @@ router.post(
       currency:'USD',
       metadata:{
         company:"procart",
-      }
+      },
+      description: 'Ecommerce services',
     })
     res.status(200).json({
       success: true,
