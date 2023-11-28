@@ -39,7 +39,7 @@ router.post("/create-shop", catchAsyncErrors(async (req, res, next) => {
 
     const activationToken = createActivationToken(seller);
 
-    const activationUrl = `http://localhost:3001/seller/activation/${activationToken}`;
+    const activationUrl = `https://melodic-pothos-017481.netlify.app/seller/activation/${activationToken}`;
 
     try {
       await sendMail({

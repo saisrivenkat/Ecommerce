@@ -1,9 +1,9 @@
 import {userEvent, fireEvent, render,screen} from '@testing-library/react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Login from '../components/Login/Login'
+import Register from '../components/Signup/Signup'
 const setup = () => {
-  const utils = render(<Login />)
+  const utils = render(<Register />)
   const input = screen.getByLabelText('email')
   const password = screen.getByLabelText('email')
   const button = screen.getByRole('button',{
@@ -11,8 +11,7 @@ const setup = () => {
   })
   return {
     input,
-    password,
-    button,
+    password,button,
     ...utils,
   }
 }
@@ -24,15 +23,17 @@ jest.mock('react-router-dom',()=>({
 }));
 
 
-describe("Test Login Component",()=>{
+describe("Test Register Component",()=>{
   test("Component",async()=>{
     const navigate=jest.fn();
     useNavigate.mockReturnValue(navigate)
     const {input,password,button} = setup()
+    
+
     fireEvent.change(input, {target: {value: 'n.srisai1234@gmail.com'}})
     expect(input.value).toBe('n.srisai1234@gmail.com')
     fireEvent.change(password,{target:{value:'Srisai@1234'}})
-    const LoginHeading = screen.getByText('Login to your account')
+    const LoginHeading = screen.getByText('Register as a new user')
     expect(LoginHeading).toBeInTheDocument();
     //button.simulate('click');
     
