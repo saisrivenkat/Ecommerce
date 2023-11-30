@@ -23,8 +23,8 @@ jest.mock('react-router-dom',()=>({
 }));
 
 
-describe("Test Register Component",()=>{
-  test("Component",async()=>{
+describe("Test Register Flow",()=>{
+  test("Register Flow",async()=>{
     const navigate=jest.fn();
     useNavigate.mockReturnValue(navigate)
     const {input,password,button} = setup()
